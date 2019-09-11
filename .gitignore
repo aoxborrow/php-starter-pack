@@ -3,3 +3,4 @@
 .idea
 ansible/*.retry
 ansible/roles/geerlingguy*
+vendor

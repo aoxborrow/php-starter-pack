@@ -1,0 +1,15 @@
+{
+    "name": "paste/pvan",
+    "description": "PHP-Vagrant-Ansible-Nginx Starter Pack",
+    "require": {
+        "php": "7.3.*"
+    },
+    "autoload": {
+        "psr-4": {
+            "PVAN\\": "src/"
+        }
+    },
+    "config": {
+        "sort-packages": true
+    }
+}

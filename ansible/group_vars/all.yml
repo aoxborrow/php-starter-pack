@@ -29,13 +29,19 @@ php_version: "7.3" # this requires geerlingguy.php-versions
 # php_default_version_debian: "7.2"
 php_webserver_daemon: nginx
 php_enable_php_fpm: true
-php_date_timezone: "America/New_York"
+php_date_timezone: "America/Los_Angeles"
+php_display_errors: "On"
 php_packages_extra:
     - php7.3-soap
     - php7.3-mysqli
     - php7.3-ldap
     - php7.3-gmp
     - php7.3-memcache
+
+# composer config
+composer_keep_updated: true
+composer_home_owner: "{{ user_name }}"
+composer_home_group: "{{ user_name }}"
 
 # nginx config
 nginx_remove_default_vhost: true

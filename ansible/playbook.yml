@@ -32,7 +32,13 @@
     - geerlingguy.nginx
     - geerlingguy.php-versions
     - geerlingguy.php
+    - geerlingguy.composer
 
   post_tasks:
+    # install composer dependencies for project
+    - composer:
+        command: install
+        working_dir: "{{ project_path }}"
+        optimize_autoloader: true
     - debug:
         msg: "group_names: {{ group_names }}, host_name: {{ host_name }}"
