@@ -2,12 +2,21 @@
 use FastRoute\Dispatcher;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Twig\Environment;
+use Twig\Loader\FilesystemLoader;
 
 // setup ROOT_DIR constant
 define('ROOT_DIR', dirname(__DIR__));
 
 // init composer autoloader
 require_once ROOT_DIR.'/vendor/autoload.php';
+
+// setup Twig templating
+$loader = new FilesystemLoader(ROOT_DIR.'/templates');
+$twig = new Environment($loader, [
+    // disable cache for local development
+    // 'cache' => ROOT_DIR.'/tmp',
+]);
 
 // TODO: automatically route to Controllers and public methods?
 // define routes and controller endpoints
@@ -22,7 +31,7 @@ $route = $dispatcher->dispatch($request->getMethod(), $request->getPathInfo());
 switch ($route[0]) {
     // could not match route, render 404 page
     case Dispatcher::NOT_FOUND:
-        Response::create('404 – Not Found', Response::HTTP_NOT_FOUND)
+        Response::create('404 – Page Not Found', Response::HTTP_NOT_FOUND)
             ->prepare($request)
             ->send();
         break;
@@ -35,12 +44,13 @@ switch ($route[0]) {
         $routeParams = $route[2];
 
         // add route params as custom attributes of Request object
-        // e.g. $request->attributues->get('some_param');
+        // usage: $request->attributues->get('some_param');
         $request->attributes->add($routeParams);
 
-        // instantiate controller and execute method endpoint with Request
-        $controller = new $controllerClass;
-        $response = $controller->$controllerMethod($request);
+        // instantiate controller and execute method endpoint
+        // using manual dependency injection for now
+        $controller = new $controllerClass($request, new Response, $twig);
+        $response = $controller->$controllerMethod();
 
         // if we got a Response object back, render it
         if ($response instanceof Response) {

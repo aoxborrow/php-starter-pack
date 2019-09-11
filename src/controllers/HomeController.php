@@ -1,19 +1,15 @@
 <?php
 namespace PMAV\Controllers;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 
-class HomeController {
-    // render hello world page
-    public function hello(Request $request): Response {
-        // get route params from Request object
-        $name = $request->attributes->get('name', 'world');
-        // simplistic PHP template handling -- don't actually do this
-        ob_start();
-        require ROOT_DIR.'/templates/home.php';
-        $html = ob_get_contents();
-        ob_end_clean();
-        $response = new Response($html);
-        return $response;
+class HomeController extends BaseController {
+
+    // render hello world homepage
+    public function hello() {
+        // build template context
+        $context = array(
+            // get route param from Request object
+            'name' => $this->request->attributes->get('name', 'world'),
+        );
+        return $this->render('home.html.twig', $context);
     }
 }
