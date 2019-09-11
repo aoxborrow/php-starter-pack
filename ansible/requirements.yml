@@ -1,0 +1,10 @@
+---
+- src: geerlingguy.firewall
+  version: 2.4.1
+- src: geerlingguy.ntp
+  version: 1.6.4
+# - src: geerlingguy.repo-epel
+# - src: geerlingguy.repo-remi
+- src: geerlingguy.nginx
+  version: 2.7.0
+# - src: geerlingguy.php

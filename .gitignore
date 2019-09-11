@@ -1,0 +1,5 @@
+.DS_Store
+.vagrant
+.idea
+ansible/*.retry
+ansible/roles/geerlingguy*

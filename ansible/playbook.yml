@@ -1,0 +1,42 @@
+---
+
+- hosts: all
+  become: yes
+
+  pre_tasks:
+    - name: Ensure Apt and SSL are latest
+      apt:
+        name:
+          - openssl
+          - libssl-dev
+          - libssl-doc
+          - libffi-dev
+        update_cache: yes
+        state: latest
+
+    - name: Install common server packages
+      apt:
+        name:
+          - build-essential
+          - bash-completion
+          - make
+          - htop
+          - vim
+          - unzip
+          - curl
+        state: present
+    - debug:
+        msg: "group_names: {{ group_names }}"
+
+
+  roles:
+    # - geerlingguy.repo-epel
+    # - geerlingguy.repo-remi
+    - geerlingguy.firewall
+    - geerlingguy.ntp
+    - geerlingguy.nginx
+    # - geerlingguy.php
+
+  post_tasks:
+    - debug:
+        msg: "group_names: {{ group_names }}, host_name: {{ host_name }}"

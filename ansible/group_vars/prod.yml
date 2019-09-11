@@ -1,0 +1,4 @@
+---
+
+# host name where site will be served, e.g. pvan.io
+host_name: "{{ project_name }}.io"
