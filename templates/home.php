@@ -2,10 +2,10 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>Hello world from PMAV!</title>
+    <title>Hello <?php echo $name; ?> from PMAV!</title>
     <link rel="stylesheet" href="/static/css/normalize.css" />
 </head>
 <body>
-    <p>Hello world from PMAV!</p>
+    <p>Hello <?php echo $name; ?> from PMAV!</p>
 </body>
 </html>

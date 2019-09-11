@@ -1,15 +1,19 @@
 {
     "name": "paste/pmav",
     "description": "PHP-MySQL-Ansible-Vagrant Starter Pack",
-    "require": {
-        "php": "7.3.*"
+    "prefer-stable": true,
+    "config": {
+        "sort-packages": true,
+        "optimize-autoloader": true
     },
     "autoload": {
         "psr-4": {
             "PMAV\\": "src/"
         }
     },
-    "config": {
-        "sort-packages": true
+    "require": {
+        "php": "7.3.*",
+        "symfony/http-foundation": "^4",
+        "nikic/fast-route": "^1.3"
     }
 }

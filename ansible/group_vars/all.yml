@@ -30,13 +30,18 @@ php_version: "7.3" # this requires geerlingguy.php-versions
 php_webserver_daemon: nginx
 php_enable_php_fpm: true
 php_date_timezone: "America/Los_Angeles"
+php_error_reporting: "E_ALL"
 php_display_errors: "On"
+php_expose_php: "Off"
+php_memory_limit: "256M"
+php_max_execution_time: "60"
 php_packages_extra:
     - php7.3-soap
     - php7.3-mysqli
     - php7.3-ldap
     - php7.3-gmp
     - php7.3-memcache
+    - php7.3-intl
 
 # composer config
 composer_keep_updated: true
@@ -53,5 +58,15 @@ nginx_vhosts:
     extra_parameters: |
       location ~ \.php$ {
           include snippets/fastcgi-php.conf;
+          fastcgi_pass 127.0.0.1:9000;
+      }
+      location / {
+          try_files $uri @php;
+      }
+      location @php {
+          include fastcgi_params;
+          fastcgi_param SCRIPT_FILENAME $document_root/index.php;
+          fastcgi_param SCRIPT_NAME index.php;
+          fastcgi_index index.php;
           fastcgi_pass 127.0.0.1:9000;
       }
