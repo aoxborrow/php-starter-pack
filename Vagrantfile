@@ -2,6 +2,7 @@
 # vi: set ft=ruby :
 
 # lowercase project name, no spaces
+# this automatically gets project name from parent folder
 PROJECT_NAME = File.basename(Dir.pwd)
 
 VAGRANTFILE_API_VERSION = "2"

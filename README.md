@@ -1,4 +1,4 @@
-pvan
+PVAN
 =====
 
-### Vagrant-Ansible-Nginx-PHP *Starter Pack*
+### PHP-Vagrant-Ansible-Nginx *Starter Pack*

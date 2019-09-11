@@ -3,8 +3,9 @@
   version: 2.4.1
 - src: geerlingguy.ntp
   version: 1.6.4
-# - src: geerlingguy.repo-epel
-# - src: geerlingguy.repo-remi
 - src: geerlingguy.nginx
   version: 2.7.0
-# - src: geerlingguy.php
+- src: geerlingguy.php-versions
+  version: 3.1.1
+- src: geerlingguy.php
+  version: 3.7.0

@@ -25,17 +25,13 @@
           - unzip
           - curl
         state: present
-    - debug:
-        msg: "group_names: {{ group_names }}"
-
 
   roles:
-    # - geerlingguy.repo-epel
-    # - geerlingguy.repo-remi
     - geerlingguy.firewall
     - geerlingguy.ntp
     - geerlingguy.nginx
-    # - geerlingguy.php
+    - geerlingguy.php-versions
+    - geerlingguy.php
 
   post_tasks:
     - debug:

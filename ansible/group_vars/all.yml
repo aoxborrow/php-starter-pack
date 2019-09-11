@@ -18,26 +18,24 @@ project_path: "{{ home_path }}/{{ project_name }}"
 # public path, e.g. /home/ubuntu/project/public
 public_path: "{{ project_path }}/public"
 
+# firewall config
+firewall_allowed_tcp_ports:
+  - "22"
+  - "80"
+  - "443"
+
 # php config
-# php_webserver_daemon: nginx
-# php_enable_php_fpm: true
-# php_enablerepo: remi
-# php_packages:
-#   - ImageMagick
-#   - php
-#   - php-cli
-#   - php-common
-#   - php-devel
-#   - php-gd
-#   - php-imap
-#   - php-ldap
-#   - php-mbstring
-#   - php-pdo
-#   - php-pear
-#   - php-pecl-apc
-#   - php-xml
-#   - php-xmlrpc
-#   - php-fpm
+php_version: "7.3" # this requires geerlingguy.php-versions
+# php_default_version_debian: "7.2"
+php_webserver_daemon: nginx
+php_enable_php_fpm: true
+php_date_timezone: "America/New_York"
+php_packages_extra:
+    - php7.3-soap
+    - php7.3-mysqli
+    - php7.3-ldap
+    - php7.3-gmp
+    - php7.3-memcache
 
 # nginx config
 nginx_remove_default_vhost: true
@@ -45,4 +43,9 @@ nginx_vhosts:
   - listen: 80
     server_name: "{{ host_name }}"
     root: "{{ public_path }}"
-    index: "index.html"
+    index: "index.php index.html"
+    extra_parameters: |
+      location ~ \.php$ {
+          include snippets/fastcgi-php.conf;
+          fastcgi_pass 127.0.0.1:9000;
+      }
