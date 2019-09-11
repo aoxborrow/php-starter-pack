@@ -1,4 +1,4 @@
-PVAN
-=====
+PMAV
+====
 
-### PHP-Vagrant-Ansible-Nginx *Starter Pack*
+### PHP-MySQL-Ansible-Vagrant *Starter Pack*

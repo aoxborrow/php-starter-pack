@@ -1,12 +1,12 @@
 {
-    "name": "paste/pvan",
-    "description": "PHP-Vagrant-Ansible-Nginx Starter Pack",
+    "name": "paste/pmav",
+    "description": "PHP-MySQL-Ansible-Vagrant Starter Pack",
     "require": {
         "php": "7.3.*"
     },
     "autoload": {
         "psr-4": {
-            "PVAN\\": "src/"
+            "PMAV\\": "src/"
         }
     },
     "config": {

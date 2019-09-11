@@ -1,4 +1,4 @@
 ---
 
-# host name where site will be served, e.g. pvan.local
+# host name where site will be served, e.g. pmav.local
 host_name: "{{ project_name }}.local"

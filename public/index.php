@@ -1,5 +1,5 @@
 <?php
-use PVAN\HomeController;
+use PMAV\HomeController;
 
 // init composer autoloader
 require_once dirname(__DIR__).'/vendor/autoload.php';

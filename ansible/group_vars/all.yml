@@ -1,9 +1,9 @@
 ---
 
-# project name, derived from parent folder, e.g. pvan
+# project name, derived from parent folder, e.g. pmav
 project_name: "{{ playbook_dir | dirname | basename }}"
 
-# host name where site will be served, e.g. pvan.local
+# host name where site will be served, e.g. pmav.local
 host_name: "{{ project_name }}.local"
 
 # linux user who will own project files
