@@ -18,11 +18,10 @@ $twig = new Environment($loader, [
     // 'cache' => ROOT_DIR.'/tmp',
 ]);
 
-// TODO: just put controllers in \Controllers and autoload as root namespace
 // define routes and controller endpoints
 $dispatcher = FastRoute\simpleDispatcher(function(FastRoute\RouteCollector $r) {
-    $r->addRoute(['GET', 'POST'], '/', ['PMAV\Controllers\HomeController', 'hello']);
-    $r->addRoute(['GET', 'POST'], '/hello/{name}', ['PMAV\Controllers\HomeController', 'hello']);
+    $r->addRoute(['GET', 'POST'], '/', ['Controllers\HomeController', 'hello']);
+    $r->addRoute(['GET', 'POST'], '/hello/{name}', ['Controllers\HomeController', 'hello']);
     // automatic controller routing -- remove these routes to use explicit routing only
     $r->addRoute(['GET', 'POST'], '/{controller}/', 'automatic_controller_routing');
     $r->addRoute(['GET', 'POST'], '/{controller}[/{method}]', 'automatic_controller_routing');
@@ -89,7 +88,7 @@ switch ($route[0]) {
 }
 
 /**
- * Try to map request URI to a controller by naming convention
+ * Match URIs to controllers by naming convention
  * @param mixed ...$dependencies
  * @return Response
  */
@@ -98,7 +97,7 @@ function automatic_controller_routing(...$dependencies) {
 
     // custom attributes are added to Request for named params
     $controller = $request->attributes->get('controller');
-    $controllerClass = 'PMAV\Controllers\\'.$controller.'Controller';
+    $controllerClass = 'Controllers\\'.ucfirst($controller).'Controller';
 
     // default to index() method if not supplied
     $method = $request->attributes->get('method');

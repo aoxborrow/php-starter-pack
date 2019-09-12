@@ -1,5 +1,5 @@
 <?php
-namespace PMAV\Controllers;
+namespace Controllers;
 
 class HomeController extends BaseController {
 

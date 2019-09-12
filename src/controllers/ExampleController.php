@@ -1,5 +1,5 @@
 <?php
-namespace PMAV\Controllers;
+namespace Controllers;
 use Symfony\Component\HttpFoundation\Response;
 
 class ExampleController extends BaseController {
@@ -7,7 +7,7 @@ class ExampleController extends BaseController {
     // example of automatic controller routing
     // http://pmav.local/example
     public function index() {
-        return Response::create("This ExampleController was routed automatically. Conventions are cool!");
+        return Response::create("This ExampleController was routed automatically. Conventions are neat!");
     }
 
     // you can find this dog because it's public
