@@ -11,6 +11,9 @@ define('ROOT_DIR', dirname(__DIR__));
 // init composer autoloader
 require_once ROOT_DIR.'/vendor/autoload.php';
 
+// register custom exception handler that shows appropriate error pages
+set_exception_handler('exception_handler');
+
 // setup Twig templating
 $loader = new FilesystemLoader(ROOT_DIR.'/templates');
 $twig = new Environment($loader, [
@@ -33,10 +36,7 @@ $route = $dispatcher->dispatch($request->getMethod(), $request->getPathInfo());
 switch ($route[0]) {
     // could not match route, render 404 page
     case Dispatcher::NOT_FOUND:
-        Response::create('404 – Page Not Found', Response::HTTP_NOT_FOUND)
-            ->prepare($request)
-            ->send();
-        break;
+        throw new NotFoundException;
 
     // successfully matched to route
     case Dispatcher::FOUND:
@@ -69,10 +69,7 @@ switch ($route[0]) {
 
         // we didn't get a Response object back, throw 500 error -- we want to enforce convention
         if (!$response instanceof Response) {
-            Response::create('500 - Internal Server Error', Response::HTTP_INTERNAL_SERVER_ERROR)
-                ->prepare($request)
-                ->send();
-            break;
+            throw new \Exception('Route handler did not return a valid Response object');
         }
 
         // we got a Response object back, send it to browser
@@ -81,16 +78,15 @@ switch ($route[0]) {
 
     // error matching route, e.g METHOD_NOT_ALLOWED, render 400 invalid request
     default:
-        Response::create('400 – Invalid Request', Response::HTTP_BAD_REQUEST)
-            ->prepare($request)
-            ->send();
-        return;
+        throw new InvalidRequestException;
 }
 
 /**
  * Match URIs to controllers by naming convention
  * @param mixed ...$dependencies
  * @return Response
+ * @throws InvalidRequestException
+ * @throws NotFoundException
  */
 function automatic_controller_routing(...$dependencies) {
     $request = $dependencies[0];
@@ -105,7 +101,7 @@ function automatic_controller_routing(...$dependencies) {
 
     // if controller class doesn't exist, just render a basic 404 not found
     if (!class_exists($controllerClass)) {
-        return Response::create('404 – Page Not Found', Response::HTTP_NOT_FOUND);
+        throw new NotFoundException;
     }
 
     try {
@@ -114,12 +110,12 @@ function automatic_controller_routing(...$dependencies) {
         $reflectMethod = $reflectClass->getMethod($controllerMethod);
         // don't allow access to private, abstract, or static methods
         if ($reflectClass->isAbstract() || !$reflectMethod->isPublic() || $reflectMethod->isAbstract() || $reflectMethod->isStatic()) {
-            throw new \Exception('Attempt to access private, abstract, or static controller method');
+            throw new InvalidRequestException('Attempt to access private, abstract, or static controller method');
         }
-    } catch (\Exception $e) {
-        // log exception and render 400 invalid request if attempting to access private, abstract, static method
+    } catch (Exception $e) {
+        // log Reflection exception and render 400 invalid request
         error_log("Caught $e");
-        return Response::create('400 – Invalid Request', Response::HTTP_BAD_REQUEST);
+        throw new InvalidRequestException;
     }
 
     // controller class exists and method is accessible!
@@ -127,4 +123,53 @@ function automatic_controller_routing(...$dependencies) {
     $controller = new $controllerClass(...$dependencies);
     $response = $controller->$controllerMethod();
     return $response;
+}
+
+// custom exceptions to display appropriate error pages
+class InvalidRequestException extends \Exception {}
+class UnauthorizedException extends \Exception {}
+class AccessDeniedException extends \Exception {}
+class NotFoundException extends \Exception {}
+
+// custom exception handler to display appropriate error pages
+function exception_handler(Throwable $e) {
+
+    // don't log our custom exceptions, just show error page
+    if ($e instanceof InvalidRequestException) {
+
+        // render 400 Invalid Request error page
+        render_error_page(400, 'Invalid Request');
+
+    } elseif ($e instanceof UnauthorizedException) {
+
+        // render 401 Unauthorized error page
+        render_error_page(401, 'Unauthorized');
+
+    } elseif ($e instanceof AccessDeniedException) {
+
+        // render 403 Access Denied error page
+        render_error_page(403, 'Access Denied');
+
+    } elseif ($e instanceof NotFoundException) {
+
+        // render 404 Not Found error page
+        render_error_page(404, 'Not Found');
+
+    } else {
+
+        // for all other exceptions, show 500 error page
+        render_error_page(500, 'Internal Server Error');
+
+        // log full exception w/stack trace
+        error_log("Caught $e");
+    }
+
+    // kill further execution
+    die;
+}
+
+// render a basic error page, can extend this to use HTML template
+function render_error_page($status_code, $msg) {
+    http_response_code($status_code);
+    echo "$status_code - $msg";
 }
