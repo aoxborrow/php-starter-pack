@@ -23,9 +23,11 @@ $twig = new Environment($loader, [
 
 // define routes and controller endpoints
 $dispatcher = FastRoute\simpleDispatcher(function(FastRoute\RouteCollector $r) {
-    $r->addRoute(['GET', 'POST'], '/', ['Controllers\HomeController', 'hello']);
-    $r->addRoute(['GET', 'POST'], '/hello/{name}', ['Controllers\HomeController', 'hello']);
-    // automatic controller routing -- remove these routes to use explicit routing only
+    // examples of explicit controller routing
+    $r->addRoute(['GET'], '/', ['Controllers\ExampleController']);
+    $r->addRoute(['GET'], '/hello[/{name}]', ['Controllers\ExampleController', 'hello']);
+
+    // automatic controller routing, e.g. /example/dog
     $r->addRoute(['GET', 'POST'], '/{controller}/', 'automatic_controller_routing');
     $r->addRoute(['GET', 'POST'], '/{controller}[/{method}]', 'automatic_controller_routing');
 });
@@ -54,7 +56,7 @@ switch ($route[0]) {
         // class-based route handler (e.g. explicitly routed controller)
         if (is_array($routeHandler)) {
             $controllerClass = $routeHandler[0];
-            $controllerMethod = $routeHandler[1];
+            $controllerMethod = empty($routeHandler[1]) ? 'index' : $routeHandler[1];
 
             // instantiate controller and execute method endpoint
             // using manual dependency injection for now
@@ -85,7 +87,6 @@ switch ($route[0]) {
  * Match URIs to controllers by naming convention
  * @param mixed ...$dependencies
  * @return Response
- * @throws InvalidRequestException
  * @throws NotFoundException
  */
 function automatic_controller_routing(...$dependencies) {
@@ -113,9 +114,9 @@ function automatic_controller_routing(...$dependencies) {
             throw new InvalidRequestException('Attempt to access private, abstract, or static controller method');
         }
     } catch (Exception $e) {
-        // log Reflection exception and render 400 invalid request
+        // log Reflection exception but render 404 not found
         error_log("Caught $e");
-        throw new InvalidRequestException;
+        throw new NotFoundException;
     }
 
     // controller class exists and method is accessible!
