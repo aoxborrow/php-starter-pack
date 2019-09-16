@@ -1,16 +1,16 @@
 default: start
 
 start:
-	sudo service php-fpm start
+	sudo service php7.3-fpm start
 	sudo service nginx start
 
 restart:
-	sudo service php-fpm restart
+	sudo service php7.3-fpm restart
 	sudo service nginx restart
 
 stop:
 	sudo service nginx stop
-	sudo service php-fpm stop
+	sudo service php7.3-fpm stop
 
 install-galaxy-roles:
 	ansible-galaxy install --roles-path ansible/roles -r ansible/requirements.yml

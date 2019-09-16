@@ -2,3 +2,6 @@
 
 # host name where site will be served, e.g. pmav.local
 host_name: "{{ project_name }}.local"
+
+# php config
+php_date_timezone: "America/Los_Angeles"

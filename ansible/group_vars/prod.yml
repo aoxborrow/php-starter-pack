@@ -2,7 +2,3 @@
 
 # host name where site will be served, e.g. pmav.io
 host_name: "{{ project_name }}.io"
-
-# php config
-php_date_timezone: "America/New_York"
-php_display_errors: "Off"
