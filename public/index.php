@@ -2,11 +2,12 @@
 use FastRoute\Dispatcher;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Twig\Environment;
+use Twig\Environment as TwigEnvironment;
 use Twig\Loader\FilesystemLoader;
+use Zend\Config\Factory as ConfigFactory;
 
 // setup ROOT_DIR constant
-define('ROOT_DIR', dirname(__DIR__));
+define('ROOT_DIR', realpath(dirname(__DIR__)));
 
 // init composer autoloader
 require_once ROOT_DIR.'/vendor/autoload.php';
@@ -14,9 +15,12 @@ require_once ROOT_DIR.'/vendor/autoload.php';
 // register custom exception handler that shows appropriate error pages
 set_exception_handler('exception_handler');
 
+// setup Config object (zend-config)
+$config = ConfigFactory::fromFile(ROOT_DIR.'/config.php', true);
+
 // setup Twig templating
 $loader = new FilesystemLoader(ROOT_DIR.'/templates');
-$twig = new Environment($loader, [
+$twig = new TwigEnvironment($loader, [
     // disable cache for local development
     // 'cache' => ROOT_DIR.'/tmp',
 ]);
@@ -51,7 +55,7 @@ switch ($route[0]) {
         $request->attributes->add($routeParams);
 
         // build dependencies we'll pass to each handler
-        $dependencies = [$request, new Response, $twig];
+        $dependencies = [$request, new Response, $config, $twig];
 
         // class-based route handler (e.g. explicitly routed controller)
         if (is_array($routeHandler)) {

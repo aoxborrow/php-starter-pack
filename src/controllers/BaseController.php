@@ -2,7 +2,8 @@
 namespace Controllers;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Twig\Environment;
+use Zend\Config\Config;
+use Twig\Environment as TwigEnvironment;
 
 abstract class BaseController {
 
@@ -17,7 +18,12 @@ abstract class BaseController {
     public $response;
 
     /**
-     * @var Environment
+     * @var Config
+     */
+    public $config;
+
+    /**
+     * @var TwigEnvironment
      */
     public $twig;
 
@@ -25,11 +31,13 @@ abstract class BaseController {
      * BaseController constructor
      * @param Request $request
      * @param Response $response
-     * @param Environment $twig
+     * @param Config $config
+     * @param TwigEnvironment $twig
      */
-    public function __construct(Request $request, Response $response, Environment $twig) {
+    public function __construct(Request $request, Response $response, Config $config, TwigEnvironment $twig) {
         $this->request = $request;
         $this->response = $response;
+        $this->config = $config;
         $this->twig = $twig;
     }
 

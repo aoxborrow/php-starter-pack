@@ -4,3 +4,4 @@
 ansible/*.retry
 ansible/roles/geerlingguy*
 vendor
+config.php
