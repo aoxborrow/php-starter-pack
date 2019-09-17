@@ -5,3 +5,4 @@ host_name: "{{ project_name }}.local"
 
 # php config
 php_date_timezone: "America/Los_Angeles"
+php_display_errors: "On"

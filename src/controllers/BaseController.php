@@ -1,5 +1,7 @@
 <?php
 namespace Controllers;
+use PDO;
+use PDOStatement;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Zend\Config\Config;
@@ -23,6 +25,11 @@ abstract class BaseController {
     public $config;
 
     /**
+     * @var PDO
+     */
+    public $pdo;
+
+    /**
      * @var TwigEnvironment
      */
     public $twig;
@@ -32,12 +39,14 @@ abstract class BaseController {
      * @param Request $request
      * @param Response $response
      * @param Config $config
+     * @param PDO $pdo
      * @param TwigEnvironment $twig
      */
-    public function __construct(Request $request, Response $response, Config $config, TwigEnvironment $twig) {
+    public function __construct(Request $request, Response $response, Config $config, PDO $pdo, TwigEnvironment $twig) {
         $this->request = $request;
         $this->response = $response;
         $this->config = $config;
+        $this->pdo = $pdo;
         $this->twig = $twig;
     }
 

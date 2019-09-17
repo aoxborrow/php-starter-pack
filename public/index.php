@@ -16,9 +16,20 @@ require_once ROOT_DIR.'/vendor/autoload.php';
 set_exception_handler('exception_handler');
 
 // setup Config object (zend-config)
+// https://docs.zendframework.com/zend-config/
 $config = ConfigFactory::fromFile(ROOT_DIR.'/config.php', true);
 
+// setup default PDO connection
+$dsn = 'mysql:host='.$config['db']['host'].';dbname='.$config['db']['name'].';charset=utf8mb4';
+$pdo = new PDO($dsn, $config['db']['user'], $config['db']['pass'], [
+    PDO::ATTR_EMULATE_PREPARES => false,
+    PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+    PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+    PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8mb4 COLLATE utf8mb4_unicode_ci",
+]);
+
 // setup Twig templating
+// https://twig.symfony.com/
 $loader = new FilesystemLoader(ROOT_DIR.'/templates');
 $twig = new TwigEnvironment($loader, [
     // disable cache for local development
@@ -26,6 +37,7 @@ $twig = new TwigEnvironment($loader, [
 ]);
 
 // define routes and controller endpoints
+// https://github.com/nikic/FastRoute
 $dispatcher = FastRoute\simpleDispatcher(function(FastRoute\RouteCollector $r) {
     // examples of explicit controller routing
     $r->addRoute(['GET'], '/', ['Controllers\ExampleController']);
@@ -55,7 +67,7 @@ switch ($route[0]) {
         $request->attributes->add($routeParams);
 
         // build dependencies we'll pass to each handler
-        $dependencies = [$request, new Response, $config, $twig];
+        $dependencies = [$request, new Response, $config, $pdo, $twig];
 
         // class-based route handler (e.g. explicitly routed controller)
         if (is_array($routeHandler)) {
@@ -136,7 +148,7 @@ class UnauthorizedException extends \Exception {}
 class AccessDeniedException extends \Exception {}
 class NotFoundException extends \Exception {}
 
-// custom exception handler to display appropriate error pages
+// custom exception handler to display appropriate error pages and HTTP error codes
 function exception_handler(Throwable $e) {
 
     // don't log our custom exceptions, just show error page
@@ -173,7 +185,7 @@ function exception_handler(Throwable $e) {
     die;
 }
 
-// render a basic error page, can extend this to use HTML template
+// send HTTP error code and render a basic error page, can extend this to use HTML template
 function render_error_page($status_code, $msg) {
     http_response_code($status_code);
     echo "$status_code - $msg";
