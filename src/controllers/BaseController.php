@@ -68,4 +68,28 @@ abstract class BaseController {
         }
         return $this->response;
     }
+
+    /**
+     * Shortcut to PDO->prepare->execute()
+     * @param string $sql
+     * @param array $args
+     * @return bool|PDOStatement
+     */
+    protected function query(string $sql, array $args = []) {
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute($args);
+        return $stmt;
+    }
+
+    /**
+     * Shortcut to PDO->prepare->execute->fetchAll()
+     * @param string $sql
+     * @param array $args
+     * @return array
+     */
+    protected function queryAll(string $sql, array $args = []) {
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute($args);
+        return $stmt->fetchAll();
+    }
 }

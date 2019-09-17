@@ -43,7 +43,7 @@ $dispatcher = FastRoute\simpleDispatcher(function(FastRoute\RouteCollector $r) {
     $r->addRoute(['GET'], '/', ['Controllers\ExampleController']);
     $r->addRoute(['GET'], '/hello[/{name}]', ['Controllers\ExampleController', 'hello']);
 
-    // automatic controller routing, e.g. /example/dog
+    // automatic controller routing, e.g. /example/results
     $r->addRoute(['GET', 'POST'], '/{controller}/', 'automatic_controller_routing');
     $r->addRoute(['GET', 'POST'], '/{controller}[/{method}]', 'automatic_controller_routing');
 });

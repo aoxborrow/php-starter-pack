@@ -1,5 +1,12 @@
 body {
     margin: 50px;
     font-family: sans-serif;
-    font-size: 16px;
+    font-size: 15px;
+}
+
+table, table th, table td {
+    border: 1px solid #ccc;
+    border-collapse: collapse;
+    text-align: left;
+    padding: 6px 8px;
 }

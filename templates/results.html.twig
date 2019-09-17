@@ -1,0 +1,28 @@
+{% extends "base.html.twig" %}
+{% block body %}
+    <h3>Query Results</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>KEY</th>
+                <th>VALUE</th>
+                <th>CREATED</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in results %}
+                <tr>
+                    <td>{{ row.id }}</td>
+                    <td>{{ row.key }}</td>
+                    <td>{{ row.value }}</td>
+                    <td>{{ row.created }}</td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="4">No results!</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

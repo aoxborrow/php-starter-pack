@@ -26,6 +26,14 @@ class ExampleController extends BaseController {
         return $this->render('hello.html.twig', ['name' => 'dog']);
     }
 
+    // example of querying database
+    // http://pmav.local/example/results
+    public function results() {
+        // you can use "queryAll" shortcut for SELECT statements
+        $results = $this->queryAll("SELECT * FROM example_data ORDER BY created DESC");
+        return $this->render('results.html.twig', ['results' => $results]);
+    }
+
     // you can't find this cat() because it's protected
     // http://pmav.local/example/cat
     protected function cat() {
