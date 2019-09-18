@@ -41,11 +41,6 @@
         command: install
         working_dir: "{{ project_path }}"
         optimize_autoloader: true
-    - name: Run db-schema.sql to create project tables
-      mysql_db:
-        state: import
-        name: "{{ project_name }}"
-        target: "{{ project_path }}/db-schema.sql"
     - name: Create default config file if it doesn't exist already
       template:
         src: config.php.j2

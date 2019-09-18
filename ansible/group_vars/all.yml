@@ -42,7 +42,7 @@ mysql_databases:
     encoding: utf8mb4
     collation: utf8mb4_unicode_ci
 
-# create mysql user, e.g. pmav
+# create project mysql user
 mysql_users:
   - name: "{{ db_user }}"
     host: "%"
