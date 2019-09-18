@@ -18,12 +18,11 @@ project_path: "{{ home_path }}/{{ project_name }}"
 # public path, e.g. /home/ubuntu/project/public
 public_path: "{{ project_path }}/public"
 
-# firewall config
-firewall_allowed_tcp_ports:
-  - "22"
-  - "80"
-  - "443"
-  - "3306"
+# database config
+db_host: localhost
+db_name: "{{ project_name }}"
+db_user: "{{ project_name }}"
+db_pass: "{{ project_name }}"
 
 # configure mysql root user
 mysql_root_home: /root
@@ -39,16 +38,23 @@ mysql_user_password_update: true
 
 # create project database
 mysql_databases:
-  - name: "{{ project_name }}"
+  - name: "{{ db_name }}"
     encoding: utf8mb4
     collation: utf8mb4_unicode_ci
 
 # create mysql user, e.g. pmav
 mysql_users:
-  - name: "{{ project_name }}"
+  - name: "{{ db_user }}"
     host: "%"
-    password: "{{ project_name }}"
-    priv: "{{ project_name }}.*:ALL"
+    password: "{{ db_pass }}"
+    priv: "{{ db_name }}.*:ALL"
+
+# firewall config
+firewall_allowed_tcp_ports:
+  - "22"
+  - "80"
+  - "443"
+  - "3306"
 
 # php config
 php_version: "7.3" # this requires geerlingguy.php-versions

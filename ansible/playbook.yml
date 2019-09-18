@@ -46,5 +46,10 @@
         state: import
         name: "{{ project_name }}"
         target: "{{ project_path }}/db-schema.sql"
+    - name: Create default config file if it doesn't exist already
+      template:
+        src: config.php.j2
+        dest: "{{ project_path }}/config.php"
+        force: no
     - debug:
         msg: "group_names: {{ group_names }}, host_name: {{ host_name }}"

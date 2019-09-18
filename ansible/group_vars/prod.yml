@@ -2,3 +2,9 @@
 
 # host name where site will be served, e.g. pmav.io
 host_name: "{{ project_name }}.io"
+
+# production database config
+# db_host: localhost
+# db_name: "{{ project_name }}"
+# db_user: "{{ project_name }}"
+# db_pass: "{{ project_name }}"
