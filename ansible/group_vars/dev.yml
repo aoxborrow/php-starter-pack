@@ -1,6 +1,6 @@
 ---
 
-# host name where site will be served, e.g. pmav.local
+# host name where site will be served, e.g. php-starter-pack.local
 host_name: "{{ project_name }}.local"
 
 # development database

@@ -1,6 +1,6 @@
 ---
 
-# host name where site will be served, e.g. pmav.io
+# host name where site will be served, e.g. php-starter-pack.io
 host_name: "{{ project_name }}.io"
 
 # production database

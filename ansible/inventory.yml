@@ -6,6 +6,6 @@ dev:
 prod:
   hosts:
     www1:
-      ansible_host: pmav.io
+      ansible_host: 123.123.123.123
       ansible_user: ubuntu
       ansible_connection: paramiko

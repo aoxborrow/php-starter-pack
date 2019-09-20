@@ -1,5 +1,8 @@
 default: start
 
+db:
+	mysql < db.sql
+
 start:
 	sudo service php7.3-fpm start
 	sudo service nginx start

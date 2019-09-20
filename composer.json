@@ -1,6 +1,6 @@
 {
-    "name": "paste/pmav",
-    "description": "PHP-MySQL-Ansible-Vagrant Starter Pack",
+    "name": "paste/php-starter-pack",
+    "description": "PHP Starter Pack",
     "prefer-stable": true,
     "config": {
         "sort-packages": true,

@@ -4,7 +4,7 @@
   become: yes
   vars:
 
-    # project name, by default derived from parent folder, e.g. pmav
+    # project name, by default derived from parent folder, e.g. php-starter-pack
     project_name: "{{ playbook_dir | dirname | basename }}"
 
     # linux user who will own project files, defaults to ansible SSH user
@@ -26,8 +26,6 @@
           - project_name is defined
           - host_name is defined
           - user_name is defined
-    - debug:
-        msg: "group_names: {{ group_names }}, host_name: {{ host_name }}, user_name: {{ user_name }}, db_name: {{ db_name }}"
 
     - name: Ensure Apt and SSL are latest
       apt:
@@ -66,10 +64,17 @@
         command: install
         working_dir: "{{ project_path }}"
         optimize_autoloader: true
+
     - name: Create default config file if it doesn't exist already
       template:
         src: config.php.j2
         dest: "{{ project_path }}/config.php"
         force: no
-    - debug:
+
+    - name: Add project database as default for linux user in .my.cnf
+      lineinfile: dest={{ home_path }}/.my.cnf line='database="{{ db_name }}"'
+      become: no
+
+    - name: Output some of the important vars for reference
+      debug:
         msg: "group_names: {{ group_names }}, host_name: {{ host_name }}, user_name: {{ user_name }}, db_name: {{ db_name }}"

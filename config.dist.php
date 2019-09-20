@@ -1,10 +1,10 @@
 <?php
 return [
-    'host' => 'pmav.local',
+    'host' => 'php-starter-pack.local',
     'db' => [
         'host' => 'localhost',
-        'name' => 'pmav',
-        'user' => 'pmav',
-        'pass' => 'pmav',
+        'name' => 'php-starter-pack',
+        'user' => 'php-starter-pack',
+        'pass' => 'php-starter-pack',
     ],
 ];
