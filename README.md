@@ -1,17 +1,15 @@
 PHP Starter Pack
 ================
 
-### PHP-MySQL-Ansible-Vagrant *Starter Pack*
-
-This is a starter template for quickly developing a modern PHP project locally with Vagrant, which is then easily deployed live with Ansible. It builds everything you need to enjoy development with a self-contained and disposable virtual machine:
- - **Vagrant** VM based on **Ubuntu 18.04**
+This is a starter pack for quickly developing a modern PHP project locally with [Vagrant](https://www.vagrantup.com/), which is then easily deployed live with [Ansible](https://docs.ansible.com/ansible/latest/). It installs and configures everything you need to enjoy a self-contained and disposable server VM:
+ - **Ubuntu 18.04**
  - **PHP 7.3** and Composer
  - **Nginx** for static files with catch-all proxy to **PHP-FPM**
  - **MySQL** database and user
 
 ### Features
 - Ansible playbook with configuration for both local development and production
-- Easily add Ansible Galaxy roles for additional infrastructure with `ansible/requirements.yml`
+- Easily add [Ansible Galaxy](https://galaxy.ansible.com/) roles for additional infrastructure with `ansible/requirements.yml`
 - Automatically installs PHP dependencies from `composer.json`
 - Minimal ["no-framework"](https://kevinsmith.io/modern-php-without-a-framework) `index.php` with automatic routing and exception handling (optional)
 
@@ -71,7 +69,7 @@ This is a starter template for quickly developing a modern PHP project locally w
 
 ### Production
 
-0. You'll need a remote user with `sudo` privileges for Ansible to provision with – don't use `root`.
+0. You'll need a remote user with `sudo` privileges for Ansible provisioning – don't use `root`.
 
 0. Edit the `prod` group in `ansible/inventory.yml` and set the `ansible_user` and `ansible_host`. This is the SSH user and host to connect to. See here for more details:
 https://docs.ansible.com/ansible/latest/user_guide/intro_inventory.html
