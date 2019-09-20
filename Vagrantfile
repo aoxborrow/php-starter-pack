@@ -22,6 +22,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     ansible.provisioning_path = "/home/vagrant/" + PROJECT_NAME + "/ansible"
     ansible.galaxy_role_file = "requirements.yml"
     ansible.galaxy_command = "ansible-galaxy install --role-file=%{role_file} --roles-path=%{roles_path}"
+    ansible.inventory_path = "inventory.yml"
     ansible.playbook = "playbook.yml"
     ansible.limit = "dev"
   end

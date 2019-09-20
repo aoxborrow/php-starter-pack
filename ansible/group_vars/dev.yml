@@ -3,6 +3,12 @@
 # host name where site will be served, e.g. pmav.local
 host_name: "{{ project_name }}.local"
 
+# development database
+db_host: localhost
+db_name: "{{ project_name }}"
+db_user: "{{ project_name }}"
+db_pass: "{{ project_name }}"
+
 # php config
 php_date_timezone: "America/Los_Angeles"
 php_display_errors: "On"

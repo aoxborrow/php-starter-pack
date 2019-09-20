@@ -2,8 +2,33 @@
 
 - hosts: all
   become: yes
+  vars:
+
+    # project name, by default derived from parent folder, e.g. pmav
+    project_name: "{{ playbook_dir | dirname | basename }}"
+
+    # linux user who will own project files, defaults to ansible SSH user
+    user_name: "{{ ansible_ssh_user | default(ansible_env.SUDO_USER, true) | default(ansible_env.USER, true) | default(ansible_user_id) }}"
+
+    # linux user's home folder, e.g. /home/ubuntu
+    home_path: "/home/{{ user_name }}"
+
+    # project path, defaults to being in user's home folder, e.g. /home/ubuntu/project
+    project_path: "{{ home_path }}/{{ project_name }}"
+
+    # public web server root, e.g. /home/ubuntu/project/public
+    public_path: "{{ project_path }}/public"
 
   pre_tasks:
+    - name: Check required vars are defined
+      assert:
+        that:
+          - project_name is defined
+          - host_name is defined
+          - user_name is defined
+    - debug:
+        msg: "group_names: {{ group_names }}, host_name: {{ host_name }}, user_name: {{ user_name }}, db_name: {{ db_name }}"
+
     - name: Ensure Apt and SSL are latest
       apt:
         name:
@@ -47,4 +72,4 @@
         dest: "{{ project_path }}/config.php"
         force: no
     - debug:
-        msg: "group_names: {{ group_names }}, host_name: {{ host_name }}"
+        msg: "group_names: {{ group_names }}, host_name: {{ host_name }}, user_name: {{ user_name }}, db_name: {{ db_name }}"

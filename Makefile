@@ -16,7 +16,7 @@ install-galaxy-roles:
 	ansible-galaxy install --roles-path ansible/roles -r ansible/requirements.yml
 
 provision-dev:
-	ansible-playbook -c local -i ansible/dev ansible/playbook.yml
+	ansible-playbook -i ansible/inventory.yml -l dev ansible/playbook.yml
 
 provision-prod:
-	ansible-playbook -c local -i ansible/prod ansible/playbook.yml
+	ansible-playbook -i ansible/inventory.yml -l prod ansible/playbook.yml --ask-pass
