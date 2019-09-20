@@ -60,7 +60,7 @@ composer_home_group: "{{ user_name }}"
 # nginx config
 nginx_remove_default_vhost: true
 nginx_vhosts:
-  - listen: 80
+  - listen: "80 default_server"
     server_name: "{{ host_name }}"
     root: "{{ public_path }}"
     index: "index.php index.html"
