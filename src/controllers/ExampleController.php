@@ -27,7 +27,7 @@ class ExampleController extends BaseController {
         return $this->render('results.html.twig', ['results' => $results]);
     }
 
-    // the controller router will not match protected or static methods
+    // the controller router will not match protected, private, or static methods
     // http://php-starter-pack.local/example/protected_example
     protected function protected_example() {
         $this->response->setContent("Can't find this protected method, sorry.");

@@ -20,6 +20,7 @@ set_exception_handler('exception_handler');
 $config = ConfigFactory::fromFile(ROOT_DIR.'/config.php', true);
 
 // setup default PDO connection
+// https://www.php.net/manual/en/book.pdo.php
 $dsn = 'mysql:host='.$config['db']['host'].';dbname='.$config['db']['name'].';charset=utf8mb4';
 $pdo = new PDO($dsn, $config['db']['user'], $config['db']['pass'], [
     PDO::ATTR_EMULATE_PREPARES => false,

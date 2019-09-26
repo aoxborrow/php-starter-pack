@@ -11,16 +11,15 @@ This is a starter pack for quickly developing a modern PHP project locally with 
 - Ansible playbook with configuration for both local development and production
 - Easily add [Ansible Galaxy](https://galaxy.ansible.com/) roles for additional infrastructure with `ansible/requirements.yml`
 - Automatically installs PHP dependencies from `composer.json`
-- Minimal ["no-framework"](https://kevinsmith.io/modern-php-without-a-framework) `index.php` with automatic routing and exception handling (optional)
+- Minimal ["no-framework"](https://kevinsmith.io/modern-php-without-a-framework) `index.php` with automatic routing, templating, and exception handling (optional -- see below)
 
 ### Makefile Shortcuts
 - `make db` - run db.sql to create project tables
-- `make start/restart/stop` - start/restart/stop Nginx & PHP-FPM 
+- `make start/restart/stop` - start/restart/stop Nginx & PHP-FPM
 - `make provision-dev` - run ansible playbook for localhost/dev
 - `make provision-prod` - run ansible playbook for production group
 - `make install-galaxy-roles` - install galaxy roles from `ansible/requirements.yml`
- 
- 
+
 ----
 
 ### Local Development
@@ -84,3 +83,34 @@ https://docs.ansible.com/ansible/latest/user_guide/intro_inventory.html
     ```
 
 0. **Profit** :heavy_check_mark:
+
+
+----
+
+### "No-Framework" PHP
+
+The `public/index.php` file contains a minimal ["no-framework"](https://kevinsmith.io/modern-php-without-a-framework) approach which uses [PSR](https://www.php-fig.org/) standards and popular 3rd-party libraries to accomplish much of what a larger framework provides. All of the libraries can be easily swapped using dependency injection. Here's a list of features and how they are implemented:
+
+ - **URL Routing** is provided by [FastRoute](https://github.com/nikic/FastRoute). Nginx is configured with a catch-all rule to forward requests to index.php if there is no matching static file.
+ - **Templating** uses the [Twig](https://twig.symfony.com/) template engine to enforce separation of PHP logic and frontend HTML. It is easy to use, well documented, and allows for convenient template inheritance.
+ - **Configuration** is handled by [zend-config](https://docs.zendframework.com/zend-config/). This small library supports multiple file formats and provides an OO interface for site configuration.
+ - **Database Access** uses the standard built-in [PDO](https://www.php.net/manual/en/book.pdo.php) library for its consistent API and data handling. A singular PDO connection is automatically provided to each controller.
+ - **Request/Response** objects are provided to each controller for convenience in handling HTTP headers, redirects, etc. These [Symfony HTTP Components](https://symfony.com/doc/current/components/http_foundation.html) are fully featured and well documented. It is easy to add the [Session](https://symfony.com/doc/current/components/http_foundation/sessions.html) component if needed.
+ - **Custom Exception Handling** allows for a better user and developer experience. It is a clean way to return proper 4XX/5XX HTTP error messages to the browser.  
+
+----
+
+### Writing Controllers
+
+The `public/index.php` file will automatically route requests to your custom "controller" classes using the following naming convention:
+```php
+/mycontroller/mymethod === MyController->mymethod()
+```
+The default method is `index()`, so you can omit it in the URL:
+```php
+/mycontroller === MyController->index()
+```
+
+Controller methods that are `protected`, `private`, or `static` will not be accessible to the router. You can also write explicit routes and use named parameters, see `public/index.php` and the [FastRoute](https://github.com/nikic/FastRoute) documentation for examples.
+
+Check out the `src/controllers/ExampleController.php` class to see examples of querying the database and rendering templates using the provided `PDO` and `Twig` instances. The abstract `BaseController` class provides a few convenience methods like `render()` and `query()/queryAll()` which should be enough to get started.
