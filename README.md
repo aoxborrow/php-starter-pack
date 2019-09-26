@@ -11,7 +11,7 @@ This is a starter pack for quickly developing a modern PHP project locally with 
 - Ansible playbook with configuration for both local development and production
 - Easily add [Ansible Galaxy](https://galaxy.ansible.com/) roles for additional infrastructure with `ansible/requirements.yml`
 - Automatically installs PHP dependencies from `composer.json`
-- Minimal ["no-framework"](https://kevinsmith.io/modern-php-without-a-framework) `index.php` with automatic routing, templating, and exception handling (optional -- see below)
+- Minimal ["no-framework"](https://kevinsmith.io/modern-php-without-a-framework) `index.php` with routing, templating, and exception handling (see below)
 
 ### Makefile Shortcuts
 - `make db` - run db.sql to create project tables
@@ -113,4 +113,4 @@ The default method is `index()`, so you can omit it in the URL:
 
 Controller methods that are `protected`, `private`, or `static` will not be accessible to the router. You can also write explicit routes and use named parameters, see `public/index.php` and the [FastRoute](https://github.com/nikic/FastRoute) documentation for examples.
 
-Check out the `src/controllers/ExampleController.php` class to see examples of querying the database and rendering templates using the provided `PDO` and `Twig` instances. The abstract `BaseController` class provides a few convenience methods like `render()` and `query()/queryAll()` which should be enough to get started.
+Check out `src/controllers/ExampleController.php` to see examples of querying the database and rendering templates using the provided `PDO` and `Twig` instances. The abstract `BaseController` class provides a few convenience methods like `render()` and `query()/queryAll()` which should be enough to get started.
